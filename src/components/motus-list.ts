@@ -74,7 +74,12 @@ export default class MotusList extends HTMLElement {
         const addBtn = document.createElement("button");
         addBtn.classList.add("add-btn");
         addBtn.appendChild(document.createTextNode("➕"));
+        addBtn.addEventListener('click', () => this.addRandomMotus())
         container.appendChild(addBtn);
+    }
+
+    addRandomMotus(){
+        
     }
 
     
