@@ -16,6 +16,14 @@ export default class MotusList extends HTMLElement {
     }
 
     async connectedCallback(){
+        const dialog = document.getElementById('motus-dialog') as MotusDialog;
+        dialog.addEventListener('motus-created', (e) => {
+            const customEvent = e as CustomEvent;
+            const newMotus = customEvent.detail;
+            this.service.addMotus(newMotus);
+            this.render()
+        })
+
         this.moti = await this.service.loadMoti();
         this.styling()
         this.render()
@@ -25,10 +33,15 @@ export default class MotusList extends HTMLElement {
     styling(){
         const style = document.createElement('style');
         style.innerText = `
+            .grid-container{
+                height: 100%
+            }
             .grid{
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                 gap: 16px;
+                overflow: auto;
+                height: 100%
             }
             .add-btn{
                 position: absolute;
@@ -49,10 +62,12 @@ export default class MotusList extends HTMLElement {
     render(){
 
         let container = this.shadowRoot!.getElementById("container");
+        
         if (container){
             container.innerHTML='';
         } else {
             container = document.createElement('div');
+            container.classList.add('grid-container')
             /*  container.setAttribute('id', 'container'); */
             container.id = "container"
             this.shadowRoot!.appendChild(container);
