@@ -1,6 +1,7 @@
 import Motus from "../model/motus";
 import MotusService from "../services/motus-service";
 import MotusCard from "./motus-card";
+import MotusDialog from "./motus-dialog";
 
 export default class MotusList extends HTMLElement {
 
@@ -15,7 +16,6 @@ export default class MotusList extends HTMLElement {
     }
 
     async connectedCallback(){
-
         this.moti = await this.service.loadMoti();
         this.styling()
         this.render()
@@ -65,7 +65,9 @@ export default class MotusList extends HTMLElement {
         for (let i = 0; i  < this.moti.length; i++) {
             const motus = this.moti[i];
             const card: MotusCard = document.createElement('motus-card') as MotusCard;
-            card.setAttribute("selected-motus", JSON.stringify(motus))
+            //card.setAttribute("selected-motus", JSON.stringify(motus))
+
+            card.motus = motus;
             main.appendChild(card)
         }
 
@@ -74,12 +76,14 @@ export default class MotusList extends HTMLElement {
         const addBtn = document.createElement("button");
         addBtn.classList.add("add-btn");
         addBtn.appendChild(document.createTextNode("➕"));
-        addBtn.addEventListener('click', () => this.addRandomMotus())
+        addBtn.addEventListener('click', () => this.openDialog())
         container.appendChild(addBtn);
     }
 
-    addRandomMotus(){
+    openDialog(){
         
+        const dialog = document.getElementById('motus-dialog') as MotusDialog;
+        dialog.openMe();
     }
 
     

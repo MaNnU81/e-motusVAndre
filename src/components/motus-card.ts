@@ -2,21 +2,23 @@ import Motus from "../model/motus";
 
 export default class MotusCard extends HTMLElement{
 
+    motus!: Motus;
+
     constructor(){
         super();
         this.attachShadow({mode: 'open'});
     }
 
 
-    get motus():Motus{
-        return JSON.parse(this.getAttribute("selected-motus")!);
+    // get motus():Motus{
+    //     return JSON.parse(this.getAttribute("selected-motus")!);
 
-       /*  const motusStr = this.getAttribute('selected-motus');
-        if (motusStr) {
-            return JSON.parse(motusStr);
-        }
-        return null; */
-    }
+    //    /*  const motusStr = this.getAttribute('selected-motus');
+    //     if (motusStr) {
+    //         return JSON.parse(motusStr);
+    //     }
+    //     return null; */
+    // }
 
     connectedCallback(){
         console.log('pippo')
