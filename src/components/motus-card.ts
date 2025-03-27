@@ -1,12 +1,37 @@
-import Motus from "../model/motus";
+import Motus from "../model/motus.ts";
 
 export default class MotusCard extends HTMLElement{
 
     motus!: Motus;
+   
 
-    constructor(){
+    constructor() {
         super();
-        this.attachShadow({mode: 'open'});
+        this.attachShadow({ mode: 'open' });
+
+        // Definisco direttamente come metodi della classe
+        this.fromTimeStampToDateString = this.fromTimeStampToDateString.bind(this);
+        this.fromValueToEmoji = this.fromValueToEmoji.bind(this);
+    }
+
+    fromValueToEmoji(value: number){
+        switch (value) {
+            case 0: 
+                return '😭';
+            case 1: 
+                return '😥';
+            case 2: 
+                return '😐';
+            case 3: 
+                return '🙂';   
+            default:
+                return '😁';
+        }
+    }
+
+    fromTimeStampToDateString(timeStamp: number){
+        const date = new Date(timeStamp);
+        return date.toDateString() + ' - ' + date.toLocaleTimeString();
     }
 
 

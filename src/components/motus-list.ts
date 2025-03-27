@@ -3,6 +3,7 @@ import MotusService from "../services/motus-service";
 import MotusCard from "./motus-card";
 import MotusDialog from "./motus-dialog";
 
+
 export default class MotusList extends HTMLElement {
 
     service: MotusService;
@@ -18,13 +19,23 @@ export default class MotusList extends HTMLElement {
     async connectedCallback(){
         const dialog = document.getElementById('motus-dialog') as MotusDialog;
         dialog.addEventListener('motus-created', (e) => {
-            const customEvent = e as CustomEvent;
-            const newMotus = customEvent.detail;
-            this.service.addMotus(newMotus);
-            this.render()
-        })
+            const customEvent = e as CustomEvent; 
+            const motusData = customEvent.detail; 
+        
+            const newMotus = new Motus(
+                motusData.id,              
+                motusData.value,
+                motusData.note,
+                motusData.creationDate,
+                motusData.location
+            );
+            this.service.addMotus(newMotus); 
+            this.render();                   
+        });
 
-        this.moti = await this.service.loadMoti();
+        this.moti = (await this.service.loadMoti()).map(
+            (motus) => new Motus(motus.id, motus.value, motus.note, motus.creationDate, motus.location)
+        );
         this.styling()
         this.render()
     }
@@ -82,7 +93,13 @@ export default class MotusList extends HTMLElement {
             const card: MotusCard = document.createElement('motus-card') as MotusCard;
             //card.setAttribute("selected-motus", JSON.stringify(motus))
 
-            card.motus = motus;
+            card.motus = new Motus(
+                motus.id,
+                motus.value,
+                motus.note,
+                motus.creationDate,
+                motus.location
+            );
             main.appendChild(card)
         }
 

@@ -1,3 +1,4 @@
+
 import Location from "./location"
 
 
@@ -39,3 +40,4 @@ export default class Motus {
         return date.toDateString() + ' - ' + date.toLocaleTimeString();
     }
 }
+

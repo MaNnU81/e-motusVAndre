@@ -62,16 +62,17 @@ export default class MotusDialog extends HTMLElement {
         this.shadowRoot!.appendChild(this.dialog);
     }
 
-    dispatchMotus() {
+    dispatchMotus() {   //ok con classe motus
         const form = this.shadowRoot!.getElementById('motus-form') as HTMLFormElement;
         const data = new FormData(form);
         const timeStamp = new Date().getTime()
-        const newMotus: Motus = {
-            id: 'user1-' + timeStamp,
-            value: parseInt(data.get('motusValue') as string),
-            creationDate: timeStamp,
-            note: data.get('note') as string
-        }
+        const newMotus = new Motus(
+            'user1-' + timeStamp,  
+            parseInt(data.get('motusValue') as string),  
+            data.get('note') as string,  
+            timeStamp, 
+            undefined  
+        );
         const event = new CustomEvent('motus-created', {detail: newMotus});
 
         this.dispatchEvent(event);
