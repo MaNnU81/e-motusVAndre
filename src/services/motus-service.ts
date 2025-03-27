@@ -1,8 +1,8 @@
-import Motus  from "../model/motus";
+import Motus  from "../model/motus.ts";
 
 export default class MotusService {
 
-    moti: Motus[]
+    moti: Motus[];
 
 
     constructor() {
@@ -17,8 +17,18 @@ export default class MotusService {
             this.moti = await this.getMotiFromJson()
             this.saveMoti();
         }
+        const newMoti = this.createMotus(this.moti) as unknown as Motus;
+        return newMoti;
+    }
 
-        return this.moti;
+    createMotus(rawMoti: { id: string; value: number; note: string }[]){
+        const motiArray = [];
+        
+        for (const motus of rawMoti) {
+            const newMotus = new Motus(motus.id, motus.value, motus.note, 0, { lat: 0, lng: 0 });
+            motiArray.push(newMotus);
+        }
+            return motiArray;
     }
 
     getMotiFromJson(): Promise<Motus[]>{
